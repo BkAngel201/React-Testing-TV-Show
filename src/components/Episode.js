@@ -1,13 +1,21 @@
 import React from 'react';
 import parse from 'html-react-parser';
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
-export default function Episodes(props) {
+export default function Episode (props) {
+    const param = useParams()
+    console.log(param);
   return (
     <div className="episodes">
-      {props.episodes.map(e => (
-        <Link to={`/episode/${e.number}`}>
-          <div className="episode" key={e.id} data-testid="episode">
+        
+      {
+        props.episodes.filter(e => {
+            return parseInt(e.number) === parseInt(param.episodeNum)
+        })
+        .map(e => (
+        <>
+           
+            <div className="episode" key={e.id} data-testid="episode">
             {e.image && (
               <img className="episode-image" src={e.image.medium} alt={e.name} />
             )}
@@ -19,9 +27,10 @@ export default function Episodes(props) {
               {e.summary && parse(e.summary)}
               <div className="flex-spacer" />
               <p className="episode-runtime">{e.runtime} minutes</p>
-            </div>
+            </div> 
+            <Link to="/">Go Back</Link>
           </div>
-        </Link>
+        </>
       ))}
     </div>
   );

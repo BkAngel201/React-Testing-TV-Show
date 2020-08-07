@@ -3,6 +3,7 @@ import Dropdown from 'react-dropdown'
 import { render, wait } from '@testing-library/react'
 import userEvent from "@testing-library/user-event";
 import App from './App'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 import {fetchShow as mockFetchShow} from './api/fetchShow'
 import { mockEpisodeData } from './fixtures/mockEpisodesData'
@@ -11,14 +12,14 @@ jest.mock('./api/fetchShow')
 
 test('App component renders without crash', () => {
     mockFetchShow.mockResolvedValue({data:mockEpisodeData})
-    render(<App />)
+    render(<Router><App /></Router>)
 })
 
 
 
 test('Updates episodes list on dropdown change', async () => {
     mockFetchShow.mockResolvedValue({data:mockEpisodeData})
-    const { getByText, getAllByText, queryAllByTestId } = render(<App />)
+    const { getByText, getAllByText, queryAllByTestId } = render(<Router><App /></Router>)
 
     expect(queryAllByTestId('episode')).toHaveLength(0)
 
